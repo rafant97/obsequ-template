@@ -1,0 +1,1 @@
+{% capture bsscommerce_login_to_see_price %}{% render 'bsscommerce-login-to-see-price-rules-logic', product: product, old_price: old_price %}{% endcapture %}{% unless bsscommerce_login_to_see_price contains "Liquid error" %}{{ bsscommerce_login_to_see_price }}{% else %}{{ old_price }}{% endunless %}

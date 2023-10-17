@@ -1,0 +1,73 @@
+<script src="{{ 'countdown.min.js' | asset_url }}"></script>
+
+<script>
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    function initEstimatedDeliveryCountDown(nextDayDeliveryEnd, nextDay) {
+        const timeLeftContainer = document.querySelector('.shipping-estimate--wrapper');
+        //document.querySelector('#shipping-estimate--delivery-date').innerHTML = nextDay.getDate() + " " + months[nextDay.getMonth()] + " " + nextDay.getFullYear();
+        nextDayDeliveryEnd.setHours(19);
+        nextDayDeliveryEnd.setMinutes(0);
+        nextDayDeliveryEnd.setSeconds(0);
+
+        Countdown.timer(nextDayDeliveryEnd, function (timeLeft) {
+            const { days, hours, minutes, seconds } = timeLeft;
+            if (days === 0 && hours === 0 && minutes === 0 && seconds == 0) {
+              timeLeftContainer.innerHTML = `Ob Service oder Qualität. Is that raiseable.`
+            } else {
+              timeLeftContainer.innerHTML = `
+                {% render 'icon', icon: 'picto-delivery-truck' %} Bestellen Sie innerhalb &nbsp<b><span
+                id="shipping-estimate--time-left">${(timeLeft.days ? timeLeft.days + " day(s) " : "") + timeLeft.hours + " Stunde(n) und " + timeLeft.minutes + " min."}</span> 
+                mit UPS, damit Ihre Sendung heute noch verschickt wird. (Montags - Freitags) <span
+                id="shipping-estimate--delivery-date"></span></b>
+              `;
+            }
+        }, function () {
+            initEstimatedDelivery()
+        })
+    }
+
+    function initEstimatedDelivery() {
+        var today = new Date();
+        var tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+        // if before 19:00 and tomorrow is a work day
+        if ((today.getHours() < 19 || (today.getHours() === 19 && today.getMinutes() <= 0)) && tomorrow.getDay() < 6 && tomorrow.getDay() > 0) {
+            // setup end datetime for timer
+            var nextDayDeliveryEnd = new Date();
+            initEstimatedDeliveryCountDown(nextDayDeliveryEnd, tomorrow)
+
+            // if after 19:00 and tomorrow is a work day
+        } else if (tomorrow.getDay() < 5 && tomorrow.getDay() > 0) {
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            var nextDayDeliveryEnd = new Date();
+            nextDayDeliveryEnd.setDate((tomorrow.getDate() - 1)); // Monday
+            initEstimatedDeliveryCountDown(nextDayDeliveryEnd, tomorrow)
+
+            // if on Saturday or Sunday, order before Monday 19:30 to receive it the next day
+        } else if (today.getDay() === 6 || today.getDay() === 0) {
+            tomorrow.setDate((today.getDate() + (today.getDay() === 0 ? 2 : 3))); // Tuesday
+            var nextDayDeliveryEnd = new Date();
+            nextDayDeliveryEnd.setDate((tomorrow.getDate() - 1)); // Monday
+            initEstimatedDeliveryCountDown(nextDayDeliveryEnd, tomorrow)
+
+            // if on Friday we deliver on Monday
+        } else if (today.getDay() === 5 && (today.getHours() < 19 || (today.getHours() === 19 && today.getMinutes() <= 0))) {
+            tomorrow.setDate((today.getDate() + 3)); // Monday
+            var nextDayDeliveryEnd = new Date();
+            initEstimatedDeliveryCountDown(nextDayDeliveryEnd, tomorrow);
+
+            // if on Friday and after cutoff we deliver on Tuesday with Monday as the next day delivery endpoint
+        } else if (today.getDay() === 5) {
+            tomorrow.setDate((today.getDate() + 4)); // Tuesday
+            var nextDayDeliveryEnd = new Date();
+            nextDayDeliveryEnd.setDate((tomorrow.getDate() - 1)); // Monday
+            initEstimatedDeliveryCountDown(nextDayDeliveryEnd, tomorrow);
+        } else {
+          const timeLeftContainer = document.querySelector('.shipping-estimate--wrapper');
+          timeLeftContainer.innerHTML = 'Ob Service oder Qualität. Is that raiseable.';
+        }
+    }
+
+    initEstimatedDelivery();
+</script>

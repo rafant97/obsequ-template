@@ -1,0 +1,7 @@
+{% layout none %}
+{% assign swatch_options = 'Colour,Color' | downcase | split: ","  %}
+{% assign image_options = '' | downcase | split: ","  %}
+{% assign text_options = 'Size' | downcase | split: ","  %}
+
+    {% include 'quick_shop', product: product %}
+  

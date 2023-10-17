@@ -1,0 +1,1 @@
+{% capture bsscommerce_login_to_see_price_product_json %}{% render 'bsscommerce-login-to-see-price-product-json-rules-logic', product: product, old_json: old_json %}{% endcapture %}{% unless bsscommerce_login_to_see_price_product_json contains "Liquid error" %}{{ bsscommerce_login_to_see_price_product_json }}{% else %}{{ old_json }}{% endunless %}

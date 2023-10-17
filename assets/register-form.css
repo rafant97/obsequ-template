@@ -1,0 +1,335 @@
+/* ------------------------------------------------------------ *\ Form \* ------------------------------------------------------------ */
+.register-form {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 50px 0;
+}
+.register-form fieldset {
+  margin-bottom: 25px;
+}
+.register-form legend {
+  background: white;
+  padding: 8px;
+}
+.register-form fieldset:last-child {
+  margin-bottom: 0;
+}
+.register-form .form__input-wrapper--checkbox {
+  margin-bottom: 0;
+}
+.register-form__head {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.register-form__vat {
+  display: none;
+  flex-flow: row wrap;
+  align-items: center;
+}
+.register-form__vat.js-active {
+  display: flex;
+}
+.register-form__vat .form__input-wrapper {
+  flex: 0 0 33.33%;
+  margin-bottom: 0;
+  margin-right: 12px;
+}
+@media (max-width: 640px) {
+  .register-form__vat .form__input-wrapper {
+    flex: 1 1;
+ }
+}
+.register-form__vat-btn {
+  background-color: #282828;
+  color: #fff;
+}
+.register-form__vat-btn svg, .register-form__submit svg {
+  width: 100%;
+  height: auto;
+}
+.register-form__vat-btn > .icon, .register-form__submit > .icon {
+  display: none;
+  width: 18px;
+  height: auto;
+}
+.register-form__vat-btn > .icon--loader, .register-form__submit > .icon--loader {
+  width: 32px;
+}
+.register-form__vat-btn.js-loading, .register-form__submit.js-loading {
+  background-color: lightgrey;
+}
+.register-form__vat-btn.js-loading span, .register-form__submit.js-loading span {
+  display: none;
+}
+.register-form__vat-btn.js-loading .icon--loader, .register-form__submit.js-loading .icon--loader {
+  display: inline-block;
+}
+.register-form__vat-btn.js-error, .register-form__submit.js-error {
+  background-color: red;
+}
+.register-form__vat-btn.js-error span, .register-form__submit.js-error span {
+  display: none;
+}
+.register-form__vat-btn.js-error .icon--error, .register-form__submit.js-error .icon--error {
+  display: inline-block;
+}
+.register-form__vat-btn.js-success, .register-form__submit.js-success {
+  background-color: green;
+}
+.register-form__vat-btn.js-success span, .register-form__submit.js-success span {
+  display: none;
+}
+.register-form__vat-btn.js-success .icon--success, .register-form__submit.js-success .icon--success {
+  display: inline-block;
+}
+.register-form__message {
+  display: none;
+  text-align: center;
+  padding: 100px 0;
+}
+.register-form__vat-error {
+  display: none;
+  width: 100%;
+  margin-top: 10px;
+}
+.register-form__submit-error {
+  display: none;
+  text-align: center;
+}
+.button--warning {
+  color: #fff;
+  background: red;
+  transition: opacity 0.2s ease-in-out;
+}
+.button--warning:hover {
+  opacity: 0.8;
+}
+
+.form__input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: baseline;
+}
+
+fieldset {
+  border: 0px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 6px 10px 12px;
+}
+
+.form__field {
+  display: block;
+  padding: 12px;
+  border-right: 2px;
+  border-top: 2px;
+  border-left: 2px;
+  width: 100%;
+  line-height: normal;
+  height: 48px;
+  color: var(--heading-color);
+  -webkit-appearance: none;
+  resize: none;
+  font-size: 1rem;
+  font-size: max(1rem,16px);
+  transition: border-color .2s ease-in-out,box-shadow .2s ease-in-out,color .2s ease-in-out;
+}
+
+.form__field:focus {
+  border-color: #282828;
+  box-shadow: 0 0 0 1px #282828;
+  color: var(--heading-color);
+  outline: none;
+}
+
+.form__input-wrapper--labelled .form__field {
+  padding-top: 20px;
+  padding-bottom: 3px;
+}
+
+.form__floating-label {
+  position: absolute;
+  left: 13px;
+  top: 0;
+  line-height: 48px;
+  font-size: 1rem;
+  color: var(--text-color);
+  transform: scale(1);
+  transform-origin: left top;
+  transition: transform .2s ease-in-out;
+  pointer-events: none;
+}
+
+.form__input-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.form__input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.form__field:focus + .form__floating-label,
+.form__field.is-filled + .form__floating-label,
+.select-wrapper.is-filled + .form__floating-label {
+  transform: translateY(-6px) scale(.8);
+}
+
+.select-wrapper--primary {
+  position: relative;
+  background: var(--secondary-background);
+}
+
+.select-wrapper {
+  position: relative;
+  color: currentColor;
+  line-height: inherit;
+  vertical-align: middle;
+}
+
+.select-wrapper--primary svg {
+  width: 12px;
+  height: 14px;
+  top: calc(50% - 7px);
+  right: 16px;
+  opacity: .7;
+}
+
+.select-wrapper svg {
+  position: absolute;
+  pointer-events: none;
+  vertical-align: baseline;
+  fill: currentColor;
+}
+
+.icon {
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  fill: currentColor;
+  vertical-align: middle;
+  background: none;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.form__input-wrapper--labelled .select-wrapper--primary.is-filled select {
+  padding-top: 16px;
+}
+
+.select-wrapper--primary select:valid {
+  color: var(--heading-color);
+}
+.select-wrapper--primary select {
+  width: 100%;
+  padding: 0 36px 0 12px;
+  height: 48px;
+  border: 1px solid #c7c7c7;
+  border-radius: 2px;
+  background: transparent;
+  font-size: 1rem;
+  font-size: max(1rem,16px);
+  transition: border-color .2s ease-in-out,box-shadow .2s ease-in-out;
+}
+.select-wrapper select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  display: inline-block;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.checkbox-wrapper {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 8px 0;
+}
+
+.checkbox-wrapper ~ label {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.checkbox-wrapper svg {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 2px;
+  top: calc(50% - 6px);
+  transform: scale(0);
+  transition: transform .2s ease-in-out;
+  color: var(--secondary-background);
+}
+
+input[type=checkbox], input[type=radio] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.checkbox, .checkbox~label {
+  vertical-align: middle;
+  cursor: pointer;
+}
+.checkbox {
+  display: block;
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #c0c0c0;
+  background: var(--secondary-background);
+  border-radius: 2px;
+  -webkit-appearance: none;
+  transition: border-color .2s ease-in-out,box-shadow .2s ease-in-out,background .2s ease-in-out;
+}
+
+.register-form__vat-btn.js-success span, .register-form__submit.js-success span {
+  display: none;
+}
+
+.button.register-form__vat-btn {
+  position: relative;
+  display: inline-block;
+  padding: 0 30px;
+  line-height: 48px;
+  border-radius: 2px;
+  text-align: center;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: background .25s ease-in-out,color .25s ease-in-out,box-shadow .25s ease-in-out;
+}
+
+.icon--success svg {
+  height: 18px;
+}
+
+@media screen and (min-width: 1000px) {
+  .checkbox-wrapper {
+    margin: 12px 0;
+  }
+}
+
+@media screen and (min-width: 641px) {
+  .form__input-row {
+    flex-direction: row;
+    align-items: flex-end;
+    margin: 0 -6px;
+  }
+
+  .form__input-row > * {
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+
+  .form__input-row > .form__input-wrapper {
+    margin-bottom: 0;
+  }
+
+  .form__input-row:not(:last-child) {
+    margin-bottom: 12px;
+  }
+}

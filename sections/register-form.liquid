@@ -1,0 +1,526 @@
+{%- assign _section = section.settings -%}
+{%- assign section_page = _section.page -%}
+{%- assign customer_metafields = false -%}
+
+{% if customer %}
+  {%- assign customer_metafields = customer.metafields.custom -%}
+{% endif %}
+
+{{ 'register-form.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'register-form.js' | asset_url }}" defer></script>
+<form data-redirect="{{section.settings.redirect_url}}" id="register-form"  action="?" class="form register-form js-register-form {% if customer %}js-register-form--update{% endif %}">
+  <div class="register-form__inner">
+    <div class="register-form__head rte">
+      {% unless customer %}
+        {% if section_page %}
+          {{ pages[section_page].content }}
+        {% endif section_page %}
+      {% endunless %}
+    </div>
+
+    {% unless customer %}
+      <input type="hidden" name="custom[language]" value="en">
+
+      <fieldset>
+        <legend>
+          {{ 'customer.register.personal_info' | t }}
+        </legend>
+
+        <div class="form__input-wrapper form__input-wrapper--labelled">
+          <input id="register-email" type="email" class="form__field form__field--text" name="customer[email]" autofocus required>
+          <label for="register-email" class="form__floating-label">{{ 'customer.register.email' | t }}</label>
+        </div>
+
+        <div class="form__input-row">
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <input id="register-first_name" type="text" class="form__field form__field--text {% if form.first_name != blank %}is-filled{% endif %}" name="customer[first_name]" value="{{ form.first_name }}" required>
+            <label for="register-first_name" class="form__floating-label">{{ 'customer.register.first_name' | t }}</label>
+          </div>
+
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <input id="register-last_name" type="text" class="form__field form__field--text {% if form.last_name != blank %}is-filled{% endif %}" name="customer[last_name]" value="{{ form.last_name }}" required>
+            <label for="register-last_name" class="form__floating-label">{{ 'customer.register.last_name' | t }}</label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>
+          {{ 'customer.register.address_info' | t }}
+        </legend>
+
+        <div class="form__input-row">
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <input id="register-company" type="text" class="form__field form__field--text {% if form.company != blank %}is-filled{% endif %}" name="address[company]" value="{{ form.company }}" required>
+            <label for="register-company" class="form__floating-label">{{ 'customer.addresses.company' | t }}</label>
+          </div>
+
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <input id="register-phone" type="text" class="form__field form__field--text {% if form.phone != blank %}is-filled{% endif %}" name="address[phone]" value="{{ form.phone }}" required>
+            <label for="register-phone" class="form__floating-label">{{ 'customer.addresses.phone' | t }}</label>
+          </div>
+        </div>
+
+        <div class="form__input-row">
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <input id="register-address1" type="text" class="form__field form__field--text {% if form.address1 != blank %}is-filled{% endif %}" name="address[address1]" value="{{ form.address1 }}" required>
+            <label for="register-address1" class="form__floating-label">{{ 'customer.addresses.address1' | t }}</label>
+          </div>
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <input id="register-address2" type="text" class="form__field form__field--text {% if form.address2 != blank %}is-filled{% endif %}" name="address[address2]" value="{{ form.address2 }}">
+            <label for="register-address2" class="form__floating-label">{{ 'customer.addresses.address2' | t }}</label>
+          </div>
+        </div>
+
+        <div class="form__input-row">
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <div class="select-wrapper select-wrapper--primary is-filled">
+              {%- render 'icon', icon: 'chevron' -%}
+              <select name="address[country]" id="register-country" required>{{ all_country_option_tags }}</select>
+            </div>
+
+            <label for="register-country" class="form__floating-label">{{ 'customer.addresses.country' | t }}</label>
+          </div>
+
+          <div id="province-holder" class="form__input-wrapper form__input-wrapper--half form__input-wrapper--labelled" style="display: none;">
+            <div class="select-wrapper select-wrapper--primary is-filled">
+              {%- render 'icon', icon: 'arrow-bottom' -%}
+              <select name="address[province]" id="register-province"></select>
+            </div>
+
+            <label for="register-province" class="form__floating-label">{{ 'customer.addresses.province' | t }}</label>
+          </div>
+        </div>
+
+        <div class="form__input-row">
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <input id="register-city" type="text" class="form__field form__field--text {% if form.city != blank %}is-filled{% endif %}" name="address[city]" value="{{ form.city }}" required>
+            <label for="register-city" class="form__floating-label">{{ 'customer.addresses.city' | t }}</label>
+          </div>
+
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <input id="register-zip" type="text" class="form__field form__field--text {% if form.zip != blank %}is-filled{% endif %}" name="address[zip]" value="{{ form.zip }}" required>
+            <label for="register-zip" class="form__floating-label">{{ 'customer.addresses.zip' | t }}</label>
+          </div>
+        </div>
+      </fieldset>
+      {% else %}
+      <input type="hidden" name="customer[id]" value="{{ customer.id }}">
+    {% endunless %}
+
+    <fieldset>
+      <legend>
+        {{ 'customer.register.vat_info' | t }}
+      </legend>
+
+      <div class="form__input-wrapper form__input-wrapper--checkbox form__input-wrapper--labelled">
+        <div class="checkbox-wrapper">
+          <input type="checkbox" class="checkbox" id="show-vat" value="" checked>
+          {% render 'icon', icon: 'check' %}
+        </div>
+
+        <label for="show-vat">{{ 'customer.register.have_vat' | t }}</label>
+      </div>
+
+      <div id="vat-field-container" class="register-form__vat js-active">
+        <div class="form__input-wrapper form__input-wrapper--labelled">
+          <input id="register-vat" type="text" class="form__field form__field--text {% if customer_metafields['vat'] %}is-filled{% endif %}" {% if customer %}disabled{% endif %} name="custom[vat]" value="{{ customer_metafields.vat }}">
+          <label for="register-vat" class="form__floating-label">{{ 'customer.register.vat_title' | t }}</label>
+        </div>
+
+        {% unless customer %}
+          <button type="button" class="button register-form__vat-btn js-validate-vat">
+            <span>{{ 'customer.register.vat_validate' | t }}</span>
+
+            <i class="icon icon--loader">{% render 'icon', icon: 'loader' %}</i>
+            <i class="icon icon--success">{% render 'icon', icon: 'check' %}</i>
+            <i class="icon icon--error">{% render 'icon', icon: 'form-error' %}</i>
+          </button>
+        {% endunless %}
+
+        <p class="register-form__vat-error">
+          {{ 'customer.register.vat_error' | t }}
+        </p>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>
+        {{ 'customer.register.license' | t }}
+      </legend>
+
+      <input type="file" id="upload-file" name="custom[file]" accept="image/jpeg,image/png,application/pdf" />
+    </fieldset>
+
+    <fieldset style="display: none;">
+      <legend>
+        {{- 'customer.register.req_title' | t -}}
+      </legend>
+
+      <div class="form__input-wrapper form__input-wrapper--checkbox form__input-wrapper--labelled">
+        <div class="checkbox-wrapper">
+          <input type="checkbox" name="custom[checkbox-EJOX]" class="checkbox" id="req" {% if customer.metafields.adv_reg["checkbox-EJOX"] or customer.metafields.custom["checkbox-EJOX"] == "on" %}checked{% endif %}>
+
+          {% render 'icon', icon: 'check' %}
+        </div>
+
+        <label for="req">{{- 'customer.register.req_label' | t -}}</label>
+      </div>
+    </fieldset>
+
+    {%- for block in section.blocks -%}
+      {%- assign _block = block.settings -%}
+      {%- case block.type -%}
+      {% when "text" %}
+      {%- assign block_title = _block.title -%}
+      {%- assign block_label = _block.label | default: block_title -%}
+      {%- assign block_type = _block.type -%}
+      {%- assign block_is_required = _block.is_required -%}
+      {%- assign name = block_title | handle -%}
+
+        {% if block_is_required %}
+          {% assign block_label = block_label | append: '*' %}
+        {% endif %}
+
+        {% if block_type == 'textarea' %}
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+              <textarea
+                      id="register-{{ name }}"
+                      name="custom[{{ name }}]"
+                      rows="4"
+                      class="form__field form__field--textarea {% if customer_metafields[name] %}is-filled{% endif %}"
+                      aria-label="{{ block_title }}"
+                {% if block_is_required %}
+                  required
+                {% endif %}
+              >
+                {% if customer_metafields[name] %}
+                  {{ customer_metafields[name] }}
+                {% endif %}
+              </textarea>
+
+            <label for="register-{{ name }}" class="form__floating-label">{{ block_label }}</label>
+          </div>
+        {% else %}
+          <div class="form__input-wrapper form__input-wrapper--labelled">
+            <input
+                    id="register-{{ name }}"
+                    type="{{ block_type }}"
+                    class="form__field form__field--text {% if customer_metafields[name] %}is-filled{% endif %}"
+                    name="custom[{{ name }}]"
+                    value="{{ customer_metafields[name] }}"
+                    {% if block_is_required %}
+            required
+                    {% endif %}>
+
+            <label for="register-{{ name }}" class="form__floating-label">{{ block_label }}</label>
+          </div>
+        {% endif %}
+      {% when "dropdown" %}
+      {%- assign block_title = _block.title -%}
+      {%- assign block_label = _block.label | default: block_title -%}
+      {%- assign block_values = _block.values -%}
+      {%- assign name = block_title | handle -%}
+      {%- assign values_arr = block_values | split: ',' -%}
+
+        <div class="form__input-wrapper form__input-wrapper--labelled">
+          <div class="select-wrapper select-wrapper--primary is-filled">
+            {%- render 'icon', icon: 'arrow-bottom' -%}
+            <select name="custom[{{ name }}]" id="register-{{ name }}">
+              {% for option in values_arr %}
+                <option value="{{- option -}}">{{- option -}}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <label for="register-{{ name }}" class="form__floating-label">{{ block_label }}</label>
+        </div>
+      {% when "checkbox" %}
+      {%- assign block_title = _block.title -%}
+      {%- assign block_label = _block.label -%}
+      {%- assign block_is_required = _block.is_required -%}
+      {%- assign name = block_title | handle -%}
+
+        {% if block_is_required %}
+          {% assign block_label = block_label | append: '*' %}
+        {% endif %}
+
+        <fieldset class="js-checkbox-group {% if block_is_required %}js-required{% endif %}">
+          {% if block_label != blank %}
+            <legend>{{ block_label }}</legend>
+          {% endif %}
+
+          {% for i in (1..15) %}
+            {% assign key = 'checkbox_' | append: forloop.index %}
+            {% assign value = _block[key] %}
+
+            {% if value != blank %}
+              <div class="form__input-wrapper form__input-wrapper--checkbox form__input-wrapper--labelled">
+                <div class="checkbox-wrapper">
+                  <input
+                          type="checkbox"
+                          class="checkbox"
+                          name="custom[{{ name }}]"
+                          id="register-{{ name }}-{{ value }}"
+                          value="{{ value }}"
+                          {% if customer_metafields[name] contains value %}
+                            checked
+                          {% endif %}
+                  >
+                  {% render 'icon', icon: 'check' %}
+                </div>
+
+                <label for="register-{{ name }}-{{ value }}">{{ value }}</label>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+        </fieldset>
+      {%- endcase -%}
+    {%- endfor -%}
+
+    <button type="submit" class="register-form__submit form__submit button button--primary button--full js-register-submit">
+      {% if customer %}
+        <span>{{ 'customer.general.update' | t }}</span>
+      {% else %}
+        <span>{{ 'customer.register.submit' | t }}</span>
+      {% endif %}
+
+      <i class="icon icon--loader">{% render 'icon', icon: 'loader' %}</i>
+      <i class="icon icon--success">{% render 'icon', icon: 'check' %}</i>
+      <i class="icon icon--error">{% render 'icon', icon: 'cross-sold-out' %}</i>
+    </button>
+
+    <p class="register-form__submit-error">
+      {{ 'customer.general.update_error_html' | t }}
+    </p>
+
+    {% unless customer %}
+      <div class="form__secondary-action">
+        <p>{{ 'customer.register.already_have_account' | t }} <a href="{{ routes.account_login_url }}" class="link link--accented">{{ 'customer.register.login' | t }}</a></p>
+      </div>
+    {% endunless %}
+  </div>
+
+  <div class="register-form__message register-form__message--success">
+    {% if customer %}
+      <p>{{- 'customer.general.update_success' | t -}}</p>
+    {% else %}
+      <p>{{- 'customer.register.success' | t -}}</p>
+    {% endif %}
+  </div>
+
+  <div class="register-form__message register-form__message--error">
+    {% if customer %}
+      <p>{{- 'customer.general.update_error_html' | t -}}</p>
+    {% else %}
+      <p>{{- 'customer.register.error_html' | t -}}</p>
+    {% endif %}
+  </div>
+
+  <div class="register-form__message register-form__message--error-email">
+    <p>{{- 'customer.register.email_error_html' | t -}}</p>
+  </div>
+</form>
+
+{% schema %}
+  {
+    "name":"Register form",
+    "settings":[
+      {
+        "type": "page",
+        "id": "page",
+        "label": "Page to display content"
+      },
+      {
+        "type": "url",
+        "id": "redirect_url",
+        "label": "Redirect URL on successful registration"
+      }
+    ],
+    "blocks":[
+      {
+        "type":"text",
+        "name":"Text field",
+        "settings":[
+          {
+            "type": "paragraph",
+            "content": "'Name' is the name of the field you'll see in the admin panel (customer requests) and customer metafields after approving them. 'Label' is the text we display above the field in the registration form."
+          },
+          {
+            "type":"text",
+            "id":"title",
+            "label":"Name",
+            "default":"Custom field"
+          },
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label"
+          },
+          {
+            "type": "select",
+            "id": "type",
+            "label": "Type of field",
+            "options": [
+              {
+                "value": "text",
+                "label": "Text"
+              },
+              {
+                "value": "textarea",
+                "label": "Long text"
+              },
+              {
+                "value": "number",
+                "label": "Number"
+              }
+            ],
+            "default": "text"
+          },
+          {
+            "type":"checkbox",
+            "id":"is_required",
+            "label":"Field is required",
+            "default":false
+          }
+        ]
+      },
+      {
+        "type":"dropdown",
+        "name":"Dropdown",
+        "settings":[
+          {
+            "type": "paragraph",
+            "content": "'Name' is the name of the field you'll see in the admin panel (customer requests) and customer metafields after approving them. 'Label' is the text we display above the field in the registration form."
+          },
+          {
+            "type":"text",
+            "id":"title",
+            "label":"Name",
+            "default":"Custom field"
+          },
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label"
+          },
+          {
+            "type":"text",
+            "id":"values",
+            "label":"Values",
+            "info":"Separate each value by a comma.",
+            "default":"value 1, value 2, value 3"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "name": "Checkbox",
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "'Name' is the name of the field you'll see in the admin panel (customer requests) and customer metafields after approving them. 'Label' is the text we display above the field in the registration form. This either acts as a group of checkboxes or a single checkbox. You can add up to 15 checkboxes in the same group. These are then saved under the same 'name' in the customer metafields and registration request."
+          },
+          {
+            "type":"text",
+            "id":"title",
+            "label":"Name",
+            "default":"Custom field"
+          },
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_1",
+            "label":"Checkbox - 1"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_2",
+            "label":"Checkbox - 2"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_3",
+            "label":"Checkbox - 3"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_4",
+            "label":"Checkbox - 4"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_5",
+            "label":"Checkbox - 5"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_6",
+            "label":"Checkbox - 6"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_7",
+            "label":"Checkbox - 7"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_8",
+            "label":"Checkbox - 8"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_9",
+            "label":"Checkbox - 9"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_10",
+            "label":"Checkbox - 10"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_11",
+            "label":"Checkbox - 11"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_12",
+            "label":"Checkbox - 12"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_13",
+            "label":"Checkbox - 13"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_14",
+            "label":"Checkbox - 14"
+          },
+          {
+            "type":"text",
+            "id":"checkbox_15",
+            "label":"Checkbox - 15"
+          },
+          {
+            "type":"checkbox",
+            "id":"is_required",
+            "label":"Field is required",
+            "default":false
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Register form"
+      }
+    ]
+  }
+{% endschema %}
