@@ -2632,6 +2632,7 @@ p + .button-group,
  */
 
 .label {
+  display: inline-block;
   padding: 0 5px;
   vertical-align: top;
   font-family: var(--text-font-family);
@@ -2649,8 +2650,9 @@ p + .button-group,
 }
 
 .label--subdued {
-  background: #7f8cad;
+  background: rgb(var(--product-sold-out-accent));
   color: rgb(255, 255, 255);
+  margin-left: 165px;
 }
 
 @media (max-width: 900px) {
@@ -2660,7 +2662,7 @@ p + .button-group,
 }
 
 .label--custom {
-  background: #16253e;
+  background: rgb(var(--product-custom-label-background));
   color: rgb(var(--product-custom-label-text-color));
 }
 
@@ -12826,7 +12828,7 @@ shopify-payment-terms {
   justify-content: space-between;
   flex-grow: 1;
   text-align: center;
-  /*padding: 20px;*/
+  padding: 20px;
 }
 
 .product-item__info--with-button {
@@ -15001,25 +15003,6 @@ span.gf-custom-text-view {
     justify-content: end!important;
     margin-bottom: 15px;
   }
-}
-
-.new-label {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-right: 50px;
-  background-color: #16253e;
-  color: white;
-  font-family: var(--text-font-family);
-  font-style: var(--text-font-style);
-  font-weight: var(--text-font-bold-weight);
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-radius: min(var(--block-border-radius), 2px);
-  padding: 0 5px;
-  vertical-align: top;
-  z-index: 500;
 }
 
 /* EndGlobo */

@@ -78,20 +78,11 @@
     {%- endcapture -%}
 
     <div class="product-item__image-wrapper {% if settings.show_secondary_image and images_count > 1 and hide_secondary_image != true %}product-item__image-wrapper--multiple{% endif %}">
-      <div style="display: flex; gap: 70px">
-        {%- unless product.available -%}
-          <span class="label label--subdued" style="margin-inline-start: 20px;">{% endraw %}{{ 'collection.product.sold_out' | t }}{% raw %}</span>
-        {%- endunless -%}
-        {%- if product.tags contains 'attribute_quality|In-Cell' -%}
-            <span class="new-label">In cell</span>
-        {% elsif product.tags contains 'attribute_quality|Original' %}
-            <span class="new-label">Original</span>
-        {% elsif product.tags contains 'attribute_quality|Pulled' %}
-            <span class="new-label">Pulled</span>
-        {% elsif product.tags contains 'attribute_quality|Refurbished' %}
-            <span class="new-label">Refurbished</span>
-        {% endif %}
-      </div>
+      {%- if product_labels != blank and reduced_content != true -%}
+        <div class="product-item__label-list label-list">
+          {{- product_labels -}}
+        </div>
+      {%- endif -%}
 
       <a href="{{ product.url }}{{variant_url}}" class="product-item__aspect-ratio aspect-ratio {% if settings.product_image_size != 'natural' %}aspect-ratio--{{ settings.product_image_size }}{% endif %}" style="padding-bottom: {{ 100.0 | divided_by: product.featured_image.aspect_ratio }}%; --aspect-ratio: {{ product.featured_image.aspect_ratio }}">
         {% if product.images.size > 0 %}
@@ -321,7 +312,6 @@
         </div>
       {%- endif -%}
 
-      {% if customer %}
        {%- if request.page_type != 'password' and settings.product_add_to_cart and product.available and reduced_content != true and show_cta != true -%}
         {%- if variants_count == 1 -%}
           {%- capture form_id -%}product_form_{{ section.id }}_{{ block.id }}_{{ product.id }}_{% increment product_form_index %}{%- endcapture -%}
@@ -364,9 +354,6 @@
           <quick-buy-drawer id="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" href="{{ product.url }}{% if product_url_contains_query %}&{% else %}?{% endif %}view=quick-buy-drawer" class="drawer drawer--large drawer--quick-buy hidden-phone"></quick-buy-drawer>
         {%- endif -%}
       {%- endif -%}
-      {% else %}
-        <a href="https://obsequ.myshopify.com/en/account/login" is="loader-button" class="product-item__cta button button--primary">In den Warenkorb</a>
-      {% endif %}
     </div>
   </product-item>
       {% endraw %}
